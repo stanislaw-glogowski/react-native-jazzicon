@@ -1,0 +1,43 @@
+{
+  "name": "react-native-jazzicon",
+  "private": true,
+  "version": "0.0.0",
+  "description": "React Native Jazzicon",
+  "author": {
+    "name": "Stanislaw Glogowski",
+    "email": "hello@newobject.pl"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stanislaw-glogowski/react-native-jazzicon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stanislaw-glogowski/react-native-jazzicon/issues"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist/*",
+    "precompile": "npm run clean",
+    "compile": "tsc",
+    "prebuild": "npm run lint",
+    "build": "npm run compile",
+    "postbuild": "tempack ./dist/",
+    "lint": "tslint src/**/*.ts"
+  },
+  "dependencies": {
+    "color": "^3.0.0",
+    "mersenne-twister": "^1.1.0",
+    "react": "^16.4.2",
+    "react-native": "^0.56.0",
+    "react-native-svg": "^6.5.2"
+  },
+  "devDependencies": {
+    "@types/color": "^3.0.0",
+    "@types/react": "^16.4.7",
+    "@types/react-native": "^0.56.5",
+    "rimraf": "^2.6.2",
+    "tempack": "^1.1.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
+  }
+}

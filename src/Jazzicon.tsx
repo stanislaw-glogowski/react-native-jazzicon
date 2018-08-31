@@ -4,7 +4,7 @@ import { Svg, Rect } from "react-native-svg";
 import * as MersenneTwister from "mersenne-twister";
 import * as Color from "color";
 import { colors, shapeCount, wobble } from "./constants";
-import { IReactNativeJazziconProps, IReactNativeJazziconState } from "./interfaces";
+import { IJazziconProps, IJazziconState } from "./interfaces";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,9 +15,9 @@ const styles = StyleSheet.create({
 /**
  * React Native Jazzicon
  */
-export default class ReactNativeJazzicon extends React.Component<IReactNativeJazziconProps, IReactNativeJazziconState> {
+export class Jazzicon extends React.Component<IJazziconProps, IJazziconState> {
 
-  private static propsToState({ seed, address }: IReactNativeJazziconProps): IReactNativeJazziconState {
+  private static propsToState({ seed, address }: IJazziconProps): IJazziconState {
     if (address) {
       address = address.toLowerCase();
 
@@ -34,11 +34,11 @@ export default class ReactNativeJazzicon extends React.Component<IReactNativeJaz
     };
   }
 
-  public state: IReactNativeJazziconState = ReactNativeJazzicon.propsToState(this.props);
+  public state: IJazziconState = Jazzicon.propsToState(this.props);
 
-  public componentWillReceiveProps(props: IReactNativeJazziconProps) {
+  public componentWillReceiveProps(props: IJazziconProps) {
     this.setState(
-      ReactNativeJazzicon.propsToState(props),
+      Jazzicon.propsToState(props),
     );
   }
 

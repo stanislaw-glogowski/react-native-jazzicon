@@ -36,7 +36,7 @@ export class Jazzicon extends React.Component<IJazziconProps, IJazziconState> {
 
   public state: IJazziconState = Jazzicon.propsToState(this.props);
 
-  public componentWillReceiveProps(props: IJazziconProps) {
+  public UNSAFE_componentWillReceiveProps(props: IJazziconProps) {
     this.setState(
       Jazzicon.propsToState(props),
     );

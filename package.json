@@ -1,7 +1,7 @@
 {
   "name": "@castle-studios/react-native-jazzicon",
   "private": false,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "React Native Jazzicon",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

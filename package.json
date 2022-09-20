@@ -39,6 +39,7 @@
     "@types/color": "^3.0.0",
     "@types/react": "^18.0.20",
     "@types/react-native": "^0.70.0",
+    "@types/mersenne-twister": "^1.1.2",
     "rimraf": "^2.6.2",
     "tempack": "^1.1.0",
     "tslint": "^5.11.0",

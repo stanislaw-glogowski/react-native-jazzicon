@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Svg, Rect } from "react-native-svg";
-import MersenneTwister from "mersenne-twister";
+import * as MersenneTwister from "mersenne-twister";
 import * as Color from "color";
 import { colors, shapeCount, wobble } from "./constants";
-import { IJazziconProps, IJazziconState } from "./interfaces";
+import { IJazziconProps } from "./interfaces";
 import { colorRotate } from "./colorUtils";
 
 const styles = StyleSheet.create({

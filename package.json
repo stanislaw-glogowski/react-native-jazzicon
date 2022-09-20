@@ -1,6 +1,6 @@
 {
-  "name": "react-native-jazzicon",
-  "private": true,
+  "name": "@castle-studios/react-native-jazzicon",
+  "private": false,
   "version": "1.0.0",
   "description": "React Native Jazzicon",
   "author": {
@@ -10,10 +10,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stanislaw-glogowski/react-native-jazzicon.git"
+    "url": "https://github.com/castle-link/react-native-jazzicon.git"
   },
   "bugs": {
-    "url": "https://github.com/stanislaw-glogowski/react-native-jazzicon/issues"
+    "url": "https://github.com/castle-link/react-native-jazzicon/issues"
   },
   "scripts": {
     "clean": "rimraf ./dist/*",

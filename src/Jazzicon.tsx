@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Svg, Rect } from "react-native-svg";
 import * as MersenneTwister from "mersenne-twister";
-import * as Color from "color";
 import { colors, shapeCount, wobble } from "./constants";
 import { IJazziconProps } from "./interfaces";
 import { colorRotate } from "./colorUtils";
@@ -43,7 +42,8 @@ export const Jazzicon = ({
         seed = parseInt(address.slice(2, 10), 16);
       }
     }
-    return new MersenneTwister(seed);
+    const _generator = new MersenneTwister(seed);
+    return _generator;
   }, [address, seed]);
 
   const genColor = useCallback(
@@ -75,6 +75,8 @@ export const Jazzicon = ({
       const transform = translate + " " + rotate;
       const fill = genColor(remainingColors);
 
+      console.log(i, { fill, transform, diameter });
+
       return (
         <Rect
           key={`shape_${i}`}
@@ -93,6 +95,7 @@ export const Jazzicon = ({
   );
 
   const remainingColors = hueShift(colors.slice(), generator);
+  console.log({ remainingColors });
   const shapesArr = Array(shapeCount).fill(undefined);
 
   return (
@@ -109,11 +112,9 @@ export const Jazzicon = ({
       ]}
     >
       <Svg width={size} height={size}>
-        {Array(shapeCount)
-          .fill(0)
-          .map((_, index) =>
-            genShape(remainingColors, size, index, shapeCount - 1)
-          )}
+        {shapesArr.map((_, index) =>
+          genShape(remainingColors, size, index, shapeCount - 1)
+        )}
       </Svg>
     </View>
   );

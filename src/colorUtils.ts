@@ -20,10 +20,12 @@ export const hexToHSL = (hex: string): HSL => {
   const rStr = "0x" + hex[1] + hex[2];
   const gStr = "0x" + hex[3] + hex[4];
   const bStr = "0x" + hex[5] + hex[6];
+
   // Then to HSL
-  const r = parseInt(rStr, 10) / 255;
-  const g = parseInt(gStr, 10) / 255;
-  const b = parseInt(bStr, 10) / 255;
+  const r = parseInt(rStr) / 255;
+  const g = parseInt(gStr) / 255;
+  const b = parseInt(bStr) / 255;
+
   let cmin = Math.min(r, g, b),
     cmax = Math.max(r, g, b),
     delta = cmax - cmin,

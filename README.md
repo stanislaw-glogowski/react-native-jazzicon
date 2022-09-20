@@ -48,5 +48,5 @@ export const App () => {
 
 The MIT License
 
-[npm-image]: https://badge.fury.io/js/react-native-jazzicon.svg
-[npm-url]: https://npmjs.org/package/react-native-jazzicon
+[npm-image]: https://badge.fury.io/js/@castle-studios%2Freact-native-jazzicon.svg
+[npm-url]: https://www.npmjs.com/package/@castle-studios/react-native-jazzicon

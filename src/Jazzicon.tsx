@@ -23,28 +23,32 @@ const hueShift = (
   return colors.map(rotate);
 };
 
+const getGenerator = (seed: number) => {
+  const generator = new MersenneTwister(seed);
+  return generator;
+};
+
 /**
  * React Native Jazzicon
  */
 export const Jazzicon = ({
   address,
-  seed,
+  seed: providedSeed,
   containerStyle,
   size,
 }: IJazziconProps) => {
-  // const [state, setState] = React.useState<IJazziconState>()
-
-  const generator = useMemo(() => {
+  const seed = useMemo(() => {
     if (address) {
-      address = address.toLowerCase();
+      const sanitizedAddress = address.toLowerCase();
 
-      if (address.startsWith("0x")) {
-        seed = parseInt(address.slice(2, 10), 16);
+      if (sanitizedAddress.startsWith("0x")) {
+        return parseInt(address.slice(2, 10), 16);
       }
+      return providedSeed;
     }
-    const _generator = new MersenneTwister(seed);
-    return _generator;
-  }, [address, seed]);
+  }, [address, providedSeed]);
+
+  const generator = getGenerator(seed); // regenrate the generator on every render so that the image remains the same
 
   const genColor = useCallback(
     (colors: Colors): string => {
@@ -75,8 +79,6 @@ export const Jazzicon = ({
       const transform = translate + " " + rotate;
       const fill = genColor(remainingColors);
 
-      console.log(i, { fill, transform, diameter });
-
       return (
         <Rect
           key={`shape_${i}`}
@@ -95,7 +97,6 @@ export const Jazzicon = ({
   );
 
   const remainingColors = hueShift(colors.slice(), generator);
-  console.log({ remainingColors });
   const shapesArr = Array(shapeCount).fill(undefined);
 
   return (

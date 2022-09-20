@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Svg, Rect } from "react-native-svg";
 import * as MersenneTwister from "mersenne-twister";
@@ -12,103 +12,84 @@ const styles = StyleSheet.create({
   },
 });
 
+const propsToState = ({ seed, address }: IJazziconProps): IJazziconState => {
+  if (address) {
+    address = address.toLowerCase();
+
+    if (address.startsWith("0x")) {
+      seed = parseInt(address.slice(2, 10), 16);
+    }
+  }
+
+  const generator = new MersenneTwister(seed);
+  const amount = generator.random() * 30 - wobble / 2;
+  return {
+    generator,
+    colors: colors.map((hex) => new Color(hex).rotate(amount).hex()),
+  };
+};
+
 /**
  * React Native Jazzicon
  */
-export class Jazzicon extends React.Component<IJazziconProps, IJazziconState> {
+export const Jazzicon = (props: IJazziconProps) => {
+  // const [state, setState] = React.useState<IJazziconState>()
 
-  private static propsToState({ seed, address }: IJazziconProps): IJazziconState {
-    if (address) {
-      address = address.toLowerCase();
+  const { generator, colors } = useMemo(() => propsToState(props), [props]);
 
-      if (address.startsWith("0x")) {
-        seed = parseInt(address.slice(2, 10), 16);
-      }
-    }
+  const { containerStyle, size } = props;
 
-    const generator = new MersenneTwister(seed);
-    const amount = (generator.random() * 30) - (wobble / 2);
-    return {
-      generator,
-      colors: colors.map((hex) => (new Color(hex)).rotate(amount).hex()),
-    };
-  }
+  const randomNumber = useMemo(() => generator.random(), [generator]);
 
-  public state: IJazziconState = Jazzicon.propsToState(this.props);
+  const randomColor = useMemo(() => {
+    return colors.splice(Math.floor(colors.length * randomNumber), 1)[0];
+  }, []);
 
-  public componentWillReceiveProps(props: IJazziconProps) {
-    this.setState(
-      Jazzicon.propsToState(props),
-    );
-  }
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          width: size,
+          height: size,
+          backgroundColor: randomColor,
+          borderRadius: size / 2,
+        },
+        containerStyle,
+      ]}
+    >
+      <Svg width={size} height={size}>
+        {Array(shapeCount)
+          .fill(0)
+          .map((_, index) => {
+            const center = size / 2;
 
-  public render() {
-    const { containerStyle, size } = this.props;
+            const firstRot = randomNumber;
+            const angle = Math.PI * 2 * firstRot;
+            const velocity =
+              (size / shapeCount) * randomNumber + (index * size) / shapeCount;
 
-    return (
-      <View
-        style={[
-          styles.container, {
-            width: size,
-            height: size,
-            backgroundColor: this.randomColor,
-            borderRadius: size / 2,
-          },
-          containerStyle,
-        ]}
-      >
-        <Svg
-          width={size}
-          height={size}
-        >
-          {Array(shapeCount)
-            .fill(0)
-            .map((_, index) => {
-              const center = size / 2;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
 
-              const firstRot = this.randomNumber;
-              const angle = Math.PI * 2 * firstRot;
-              const velocity = size / shapeCount * this.randomNumber + (index * size / shapeCount);
+            const secondRot = randomNumber;
+            const rot = firstRot * 360 + secondRot * 180;
 
-              const tx = Math.cos(angle) * velocity;
-              const ty = Math.sin(angle) * velocity;
-
-              const secondRot = this.randomNumber;
-              const rot = (firstRot * 360) + secondRot * 180;
-
-              return (
-                <Rect
-                  key={`shape_${index}`}
-                  x={0}
-                  y={0}
-                  width={size}
-                  height={size}
-                  fill={this.randomColor}
-                  transform={`translate(${tx} ${ty}) rotate(${rot.toFixed(1)} ${center} ${center})`}
-                />
-              );
-            })
-          }
-        </Svg>
-      </View>
-    );
-  }
-
-  private get randomNumber(): number {
-    const { generator } = this.state;
-    return generator.random();
-  }
-
-  private get randomColor(): string {
-    const { colors } = this.state;
-
-    /* tslint:disable-next-line:no-unused-expression */
-    this.randomNumber;
-
-    return colors
-      .splice(
-        Math.floor(colors.length * this.randomNumber),
-        1,
-      )[ 0 ];
-  }
-}
+            return (
+              <Rect
+                key={`shape_${index}`}
+                x={0}
+                y={0}
+                width={size}
+                height={size}
+                fill={randomColor}
+                transform={`translate(${tx} ${ty}) rotate(${rot.toFixed(
+                  1
+                )} ${center} ${center})`}
+              />
+            );
+          })}
+      </Svg>
+    </View>
+  );
+};

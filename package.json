@@ -1,7 +1,7 @@
 {
   "name": "react-native-jazzicon",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "React Native Jazzicon",
   "author": {
     "name": "Stanislaw Glogowski",
@@ -29,17 +29,17 @@
     "mersenne-twister": "^1.1.0"
   },
   "peerDependencies": {
-    "react": "^16.4.2",
-    "react-native": "^0.56.0",
-    "react-native-svg": "^6.5.2"
+    "react": "^18.1.0",
+    "react-native": "^0.70.0",
+    "react-native-svg": "^13.2.0"
   },
   "devDependencies": {
     "@types/color": "^3.0.0",
-    "@types/react": "^16.4.7",
-    "@types/react-native": "^0.56.5",
+    "@types/react": "^18.0.20",
+    "@types/react-native": "^0.70.0",
     "rimraf": "^2.6.2",
     "tempack": "^1.1.0",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.1"
+    "typescript": "^4.8.3"
   }
 }

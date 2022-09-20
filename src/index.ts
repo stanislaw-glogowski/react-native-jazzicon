@@ -1,4 +1,4 @@
-import {Jazzicon} from "./Jazzicon";
+import { Jazzicon } from "./Jazzicon";
 
 export * from "./interfaces";
 

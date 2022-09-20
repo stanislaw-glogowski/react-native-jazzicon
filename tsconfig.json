@@ -10,16 +10,9 @@
     "module": "commonjs",
     "target": "es6",
     "jsx": "react-native",
-    "lib": [
-      "es2016"
-    ],
-    "typeRoots": [
-      "@types",
-      "node_modules/@types"
-    ],
+    "lib": ["es2016"],
+    "typeRoots": ["@types", "node_modules/@types"],
     "outDir": "./dist"
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }

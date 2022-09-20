@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Svg, Rect } from "react-native-svg";
-import * as MersenneTwister from "mersenne-twister";
+import MersenneTwister from "mersenne-twister";
 import * as Color from "color";
 import { colors, shapeCount, wobble } from "./constants";
 import { IJazziconProps, IJazziconState } from "./interfaces";
+import { colorRotate } from "./colorUtils";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,38 +13,87 @@ const styles = StyleSheet.create({
   },
 });
 
-const propsToState = ({ seed, address }: IJazziconProps): IJazziconState => {
-  if (address) {
-    address = address.toLowerCase();
+type Colors = Array<string>;
 
-    if (address.startsWith("0x")) {
-      seed = parseInt(address.slice(2, 10), 16);
-    }
-  }
-
-  const generator = new MersenneTwister(seed);
+const hueShift = (
+  colors: Colors,
+  generator: MersenneTwister.IMersenneTwister
+): Array<string> => {
   const amount = generator.random() * 30 - wobble / 2;
-  return {
-    generator,
-    colors: colors.map((hex) => new Color(hex).rotate(amount).hex()),
-  };
+  const rotate = (hex: string) => colorRotate(hex, amount);
+  return colors.map(rotate);
 };
 
 /**
  * React Native Jazzicon
  */
-export const Jazzicon = (props: IJazziconProps) => {
+export const Jazzicon = ({
+  address,
+  seed,
+  containerStyle,
+  size,
+}: IJazziconProps) => {
   // const [state, setState] = React.useState<IJazziconState>()
 
-  const { generator, colors } = useMemo(() => propsToState(props), [props]);
+  const generator = useMemo(() => {
+    if (address) {
+      address = address.toLowerCase();
 
-  const { containerStyle, size } = props;
+      if (address.startsWith("0x")) {
+        seed = parseInt(address.slice(2, 10), 16);
+      }
+    }
+    return new MersenneTwister(seed);
+  }, [address, seed]);
 
-  const randomNumber = useMemo(() => generator.random(), [generator]);
+  const genColor = useCallback(
+    (colors: Colors): string => {
+      const rand = generator.random(); // purposefully call the generator once, before using it again on the next line
+      const idx = Math.floor(colors.length * generator.random());
+      const color = colors.splice(idx, 1)[0];
+      return color;
+    },
+    [generator]
+  );
 
-  const randomColor = useMemo(() => {
-    return colors.splice(Math.floor(colors.length * randomNumber), 1)[0];
-  }, []);
+  const genShape = useCallback(
+    (remainingColors: Colors, diameter: number, i: number, total: number) => {
+      const center = diameter / 2;
+      const firstRot = generator.random();
+      const angle = Math.PI * 2 * firstRot;
+      const velocity =
+        (diameter / total) * generator.random() + (i * diameter) / total;
+      const tx = Math.cos(angle) * velocity;
+      const ty = Math.sin(angle) * velocity;
+      const translate = "translate(" + tx + " " + ty + ")";
+
+      // Third random is a shape rotation on top of all of that.
+      const secondRot = generator.random();
+      const rot = firstRot * 360 + secondRot * 180;
+      const rotate =
+        "rotate(" + rot.toFixed(1) + " " + center + " " + center + ")";
+      const transform = translate + " " + rotate;
+      const fill = genColor(remainingColors);
+
+      return (
+        <Rect
+          key={`shape_${i}`}
+          x="0"
+          y="0"
+          rx="0"
+          ry="0"
+          height={diameter}
+          width={diameter}
+          transform={transform}
+          fill={fill}
+        />
+      );
+    },
+    [genColor, generator]
+  );
+
+  const remainingColors = hueShift(colors.slice(), generator);
+  const shapesArr = Array(shapeCount).fill(undefined);
 
   return (
     <View
@@ -52,7 +102,7 @@ export const Jazzicon = (props: IJazziconProps) => {
         {
           width: size,
           height: size,
-          backgroundColor: randomColor,
+          backgroundColor: genColor(remainingColors),
           borderRadius: size / 2,
         },
         containerStyle,
@@ -61,34 +111,9 @@ export const Jazzicon = (props: IJazziconProps) => {
       <Svg width={size} height={size}>
         {Array(shapeCount)
           .fill(0)
-          .map((_, index) => {
-            const center = size / 2;
-
-            const firstRot = randomNumber;
-            const angle = Math.PI * 2 * firstRot;
-            const velocity =
-              (size / shapeCount) * randomNumber + (index * size) / shapeCount;
-
-            const tx = Math.cos(angle) * velocity;
-            const ty = Math.sin(angle) * velocity;
-
-            const secondRot = randomNumber;
-            const rot = firstRot * 360 + secondRot * 180;
-
-            return (
-              <Rect
-                key={`shape_${index}`}
-                x={0}
-                y={0}
-                width={size}
-                height={size}
-                fill={randomColor}
-                transform={`translate(${tx} ${ty}) rotate(${rot.toFixed(
-                  1
-                )} ${center} ${center})`}
-              />
-            );
-          })}
+          .map((_, index) =>
+            genShape(remainingColors, size, index, shapeCount - 1)
+          )}
       </Svg>
     </View>
   );

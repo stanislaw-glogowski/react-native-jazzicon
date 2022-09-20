@@ -1,4 +1,4 @@
-import * as MersenneTwister from "mersenne-twister";
+import MersenneTwister from "mersenne-twister";
 import { StyleProp, ViewStyle } from "react-native";
 
 export interface IJazziconProps {
@@ -12,3 +12,5 @@ export interface IJazziconState {
   generator: MersenneTwister.IMersenneTwister;
   colors: string[];
 }
+
+export type Colors = string[];

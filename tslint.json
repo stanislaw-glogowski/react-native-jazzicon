@@ -4,6 +4,10 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "max-line-length": false,
-    "no-shadowed-variable": false
+    "no-shadowed-variable": false,
+    "curly": false,
+    "interface-name": false,
+    "prefer-const": false,
+    "one-variable-per-declaration": false
   }
 }

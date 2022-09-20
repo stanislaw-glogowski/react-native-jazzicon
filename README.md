@@ -2,7 +2,9 @@
 
 [![NPM version][npm-image]][npm-url]
 
-React Native component for [jazzicon](https://github.com/danfinlay/jazzicon)
+React Native component for [jazzicon](https://github.com/castle-link/react-native-jazzicon)
+
+Forked from https://github.com/stanislaw-glogowski/react-native-jazzicon
 
 ## Installation
 
@@ -13,30 +15,31 @@ React Native component for [jazzicon](https://github.com/danfinlay/jazzicon)
 
 ## Usage
 
-With numeric `seed`: 
+With numeric `seed`:
 
 ```js
-import Jazzicon from 'react-native-jazzicon'
- 
+import Jazzicon from "react-native-jazzicon";
+
 export default class App extends React.Component {
-   render() {
-      return (
-        <Jazzicon size={120} seed={Math.round(Math.random() * 10000000)} />
-      );
+  render() {
+    return <Jazzicon size={120} seed={Math.round(Math.random() * 10000000)} />;
   }
 }
 ```
 
-With ethereum `address`: 
+With ethereum `address`:
 
 ```js
-import Jazzicon from 'react-native-jazzicon'
- 
+import Jazzicon from "react-native-jazzicon";
+
 export default class App extends React.Component {
-   render() { 
-      return ( 
-        <Jazzicon size={120} address={"0x2152220ab60719d6f987f6de1478971c585841c7"} />
-      );
+  render() {
+    return (
+      <Jazzicon
+        size={120}
+        address={"0x2152220ab60719d6f987f6de1478971c585841c7"}
+      />
+    );
   }
 }
 ```
@@ -47,5 +50,3 @@ The MIT License
 
 [npm-image]: https://badge.fury.io/js/react-native-jazzicon.svg
 [npm-url]: https://npmjs.org/package/react-native-jazzicon
-
-

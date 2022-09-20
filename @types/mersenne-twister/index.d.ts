@@ -1,7 +1,6 @@
 declare module "mersenne-twister" {
-
   const MersenneTwister: {
-    new(seed?: number): MersenneTwister.IMersenneTwister;
+    new (seed?: number): MersenneTwister.IMersenneTwister;
   };
 
   namespace MersenneTwister {

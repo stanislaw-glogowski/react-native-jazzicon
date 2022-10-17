@@ -2,7 +2,7 @@
 
 [![NPM version][npm-image]][npm-url]
 
-React Native component for [jazzicon](https://github.com/castle-link/react-native-jazzicon) matching the same
+React Native component for [jazzicon](https://github.com/castle-link/react-native-jazzicon)
 
 Forked from stanislaw-glogowski's [react-native-jazzicon](https://github.com/stanislaw-glogowski/react-native-jazzicon) and adapted to match [Metamask's jazzicon draw config](https://github.com/MetaMask/jazzicon/blob/master/index.js)
 
